@@ -1,0 +1,39 @@
+modLoader="javafml" #mandatory
+# A version range to match for said mod loader - for regular FML @Mod it will be the forge version
+loaderVersion="[46,)" #mandatory This is typically bumped every Minecraft version by Forge. See our download page for lists of versions.
+license="MIT"
+# A URL to refer people to when problems occur with this mod
+issueTrackerURL="https://marco/SlimeBoots/issues"
+# A list of mods - how many allowed here is determined by the individual mod loader
+[[mods]] #mandatory
+# The modid of the mod
+modId="slimeboots" #mandatory
+
+version="${version}" #mandatory
+
+displayName="SlimeBoots" #mandatory
+
+logoFile="icon.png" #optional
+
+description='''
+
+'''
+[[dependencies.slimeboots]] #optional
+   # the modid of the dependency
+   modId="forge" #mandatory
+   # Does this dependency have to exist - if not, ordering below must be specified
+   mandatory=true #mandatory
+   # The version range of the dependency
+   versionRange="[46,)" #mandatory
+   # An ordering relationship for the dependency - BEFORE or AFTER required if the relationship is not mandatory
+   ordering="NONE"
+   # Side this dependency is applied on - BOTH, CLIENT or SERVER
+   side="BOTH"
+# Here's another dependency
+[[dependencies.slimeboots]]
+   modId="minecraft"
+   mandatory=true
+   # This version range declares a minimum of the current minecraft version up to but not including the next major version
+   versionRange="[1.20,1.20.1)"
+   ordering="NONE"
+   side="BOTH"
