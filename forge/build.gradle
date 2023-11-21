@@ -6,6 +6,8 @@ architectury {
     forge()
 }
 
+version = "${rootProject.mod_version}-${rootProject.minecraft_version}-forge"
+
 configurations {
     common
     shadowCommon // Don't use shadow from the shadow plugin because we don't want IDEA to index this.

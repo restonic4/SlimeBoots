@@ -19,6 +19,8 @@
   },
   "depends": {
     "fabricloader": ">=0.14.22",
-    "minecraft": ">=1.20"
+    "minecraft": "=1.19.3",
+    "architectury": ">=7.1.86",
+    "restapi": "=0.9-1.19.3-Fabric"
   }
 }

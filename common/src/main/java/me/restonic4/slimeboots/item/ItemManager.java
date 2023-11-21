@@ -1,20 +1,20 @@
 package me.restonic4.slimeboots.item;
 
-import com.mojang.blaze3d.shaders.Effect;
 import dev.architectury.event.EventResult;
 import dev.architectury.event.events.common.EntityEvent;
 import dev.architectury.event.events.common.TickEvent;
-import dev.architectury.hooks.level.biome.EffectsProperties;
-import dev.architectury.registry.registries.DeferredSupplier;
-import me.restonic4.restapi.RestApi;
+import me.restonic4.restapi.holder.RestItem;
 import me.restonic4.restapi.item.ItemRegistry;
+import me.restonic4.restapi.util.CustomArmorMaterial;
 import me.restonic4.restapi.util.CustomItemProperties;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.CreativeModeTabs;
-import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.crafting.Ingredient;
 
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -23,19 +23,24 @@ import java.util.concurrent.atomic.AtomicReference;
 import static me.restonic4.slimeboots.SlimeBoots.MOD_ID;
 
 public class ItemManager {
-    public static Object SLIME_BOOTS = ItemRegistry.CreateCustom(
+    public static CustomArmorMaterial SLIME_MATERIAL = new CustomArmorMaterial(
+            "slime",
+            26,
+            new int[]{ 5, 7, 5, 4 },
+            25,
+            SoundEvents.SLIME_SQUISH,
+            1f,
+            0f,
+            () -> Ingredient.of(Items.SLIME_BALL)
+    );
+
+    public static RestItem SLIME_BOOTS = ItemRegistry.CreateCustom(
             MOD_ID,
             "slime_boots",
             () -> new ArmorItem(
-                    ArmorMaterialSet.SLIME,
-                    ArmorItem.Type.BOOTS,
-                    new CustomItemProperties()
-                            .food(
-                                    1,
-                                    1,
-                                    ItemRegistry.CreateExistingEffect(MobEffects.POISON,20*6,1),
-                                    1)
-                            .build().arch$tab(CreativeModeTabs.TOOLS_AND_UTILITIES)
+                    SLIME_MATERIAL,
+                    SLIME_MATERIAL.boots(),
+                    new CustomItemProperties().tab(CreativeModeTabs.TOOLS_AND_UTILITIES).build()
             )
     );
 
@@ -50,7 +55,7 @@ public class ItemManager {
                         AtomicBoolean hasSlimeBoots = new AtomicBoolean(false);
 
                         entity.getArmorSlots().forEach(itemStack -> {
-                            if (itemStack.getItem().getDefaultInstance().getItem() == ((DeferredSupplier<Item>)SLIME_BOOTS).get()) {
+                            if (itemStack.getItem().getDefaultInstance().getItem() == SLIME_BOOTS.get().get()) {
                                 hasSlimeBoots.set(true);
                             }
                         });
@@ -79,13 +84,13 @@ public class ItemManager {
                             AtomicBoolean hasSlimeBoots = new AtomicBoolean(false);
 
                             player.getArmorSlots().forEach(itemStack -> {
-                                if (itemStack.getItem().getDefaultInstance().getItem() == ((DeferredSupplier<Item>)SLIME_BOOTS).get()) {
+                                if (itemStack.getItem().getDefaultInstance().getItem() == SLIME_BOOTS.get().get()) {
                                     hasSlimeBoots.set(true);
                                 }
                             });
 
                             if (hasSlimeBoots.get()) {
-                                MobEffectInstance effect = (MobEffectInstance) ItemRegistry.CreateExistingEffect(MobEffects.JUMP, 30, 1);
+                                MobEffectInstance effect = ItemRegistry.CreateExistingEffect(MobEffects.JUMP, 30, 1);
                                 player.addEffect(effect);
                             }
                         }
